@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Selamat Ulang Tahun!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@700&display=swap');/* Background full screen dengan pantai */ body, html { margin: 0; padding: 0; height: 100%; font-family: 'Comic Neue', cursive; overflow: hidden; color: #fff; }
+
+body { background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed; background-size: cover; position: relative; }
+
+/* Layer animasi bunga & love */ .floating { position: fixed; pointer-events: none; user-select: none; font-size: 24px; opacity: 0.8; animation-timing-function: linear; }
+
+/* Animasi bunga/love naik ke atas dan fade out */ @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0.8; } 100% { transform: translateY(-150vh) scale(1.5); opacity: 0; } }
+
+/* Container halaman */ .page { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 100vh; padding: 20px; background: rgba(0,0,0,0.3); }
+
+.active { display: flex; }
+
+/* Animasi tulisan muncul slide up + fade in */ h1, h2, td { font-family: 'Pacifico', cursive; text-shadow: 0 0 15px #ff6b81; animation: slideFadeIn 1s ease forwards; opacity: 0; }
+
+@keyframes slideFadeIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(30px); } }
+
+input[type="text"] { padding: 12px; font-size: 1.2rem; border-radius: 30px; border: none; margin-bottom: 20px; width: 260px; text-align: center; outline: none; }
+
+button { padding: 12px 30px; font-size: 1.1rem; border-radius: 30px; border: none; background: #ff4d6d; color: white; cursor: pointer; box-shadow: 0 4px 12px #ff5c83; margin-top: 30px; }
+
+table { margin-top: 20px; border-collapse: collapse; width: 90%; max-width: 700px; background-color: rgba(255, 255, 255, 0.2); border-radius: 12px; overflow: hidden; box-shadow: 0 0 20px #ff87a2; }
+
+td { padding: 30px; font-size: 1.2rem; }
+
+.gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
+
+.gallery img { width: 120px; height: 120px; border-radius: 15px; object-fit: cover; box-shadow: 0 0 10px #fff; transition: transform 0.3s ease; }
+
+.gallery img:hover { transform: scale(1.1); }
+
+.heart-click { font-size: 3rem; cursor: pointer; animation: pulse 1s infinite; color: #ff6b81; margin-top: 30px; }
+
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } } </style>
+
+</head>
+<body><!-- Animasi bunga dan love --><script>
+  const emojis = ['🌸','🌺','💖','💗','🌹','💘'];
+  function createFloatingEmoji() {
+    const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+    const span = document.createElement('span');
+    span.classList.add('floating');
+    span.textContent = emoji;
+    span.style.left = Math.random() * 100 + 'vw';
+    span.style.fontSize = (20 + Math.random()*30) + 'px';
+    span.style.animation = `floatUp ${8 + Math.random()*5}s linear forwards`;
+    document.body.appendChild(span);
+
+    // Hapus setelah animasi selesai biar gak numpuk
+    span.addEventListener('animationend', () => span.remove());
+  }
+  setInterval(createFloatingEmoji, 600);
+</script><!-- Halaman input nama --><div class="page active" id="namePage">
+  <h1 style="animation-delay: 0.2s;">Masukin Nama Kamuuu</h1>
+  <input type="text" id="loverName" placeholder="Contoh: CIAA CANTIKK" />
+  <button id="startBtn">Mulai</button>
+</div><!-- Halaman pesan --><div class="page" id="messagePage">
+  <h2 style="animation-delay: 0.3s;" id="greeting"></h2>
+  <table>
+    <tbody>
+      <tr>
+        <td id="messageContent" style="animation-delay: 0.5s;"></td>
+      </tr>
+    </tbody>
+  </table>
+  <button id="nextBtn">Selanjutnya</button>
+</div><!-- Halaman galeri --><div class="page" id="galleryPage">
+  <h2>fotoo cantikk kamuuuu</h2>
+  <div class="gallery">
+    <img src="1.jpg" alt="1" />
+    <img src="2.jpg" alt="2" />
+    <img src="4.jpg" alt="3" />
+    <img src="5.jpg" alt="4" />
+  </div>
+  <button id="toHeartPage">Lanjut Lagi</button>
+</div><!-- Halaman klik hati --><div class="page" id="heartPage">
+  <h2>Klik Hatiku Kalau Kamu Sayang Aku</h2>
+  <div class="heart-click" id="heartBtn">❤️</div>
+</div><!-- Musik --><audio id="bgMusic" autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg" />
+</audio><script>
+  const pages = document.querySelectorAll('.page');
+  const startBtn = document.getElementById('startBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const loverNameInput = document.getElementById('loverName');
+  const greeting = document.getElementById('greeting');
+  const messageContent = document.getElementById('messageContent');
+  const bgMusic = document.getElementById('bgMusic');
+
+  const galleryPage = document.getElementById('galleryPage');
+  const heartPage = document.getElementById('heartPage');
+  const toHeartPageBtn = document.getElementById('toHeartPage');
+  const heartBtn = document.getElementById('heartBtn');
+
+  const messages = [
+    "Untuk yang paling spesial di hatiku,",
+    "Selamat ulang tahun, sayang! Hari ini bukan sekadar hari bertambahnya usiamu, tapi juga momen buat aku bersyukur karena Tuhan menghadirkan kamu dalam hidupku. Aku nggak pernah berhenti kagum sama kamu dengan segala kebaikan, ketulusan, dan caramu membuat hariku lebih berwarna.",
+    "Aku tahu, perjalanan hidup nggak selalu mulus, ada naik turunnya. Tapi aku mau kamu tahu kalau aku akan selalu ada di sampingmu, dalam setiap langkah, setiap tawa, bahkan setiap tangis yang mungkin datang. Aku ingin jadi alasan di balik senyum terindahmu, tempat pulang saat kamu lelah, dan seseorang yang terus mendukungmu untuk meraih impianmu.",
+    "Di hari spesial ini, aku berdoa semoga semua yang kamu inginkan bisa terwujud. Semoga kebahagiaan selalu menyertai setiap langkahmu, dan semoga cinta kita makin kuat, makin dewasa, dan makin bermakna seiring waktu berjalan.",
+    "Aku mencintaimu, lebih dari yang bisa aku ungkapkan dengan kata-kata. Selamat ulang tahun, cintaku! Teruslah bersinar, karena dunia ini lebih indah dengan kehadiranmu di dalamnya."
+  ];
+
+  let currentIndex = 0;
+  let loverName = '';
+
+  function showPage(index) {
+    pages.forEach(p => p.classList.remove('active'));
+    pages[index].classList.add('active');
+  }
+
+  startBtn.addEventListener('click', () => {
+    loverName = loverNameInput.value.trim();
+    if (loverName === '') {
+      alert("Isi nama dulu dong, sayangg!");
+      return;
+    }
+    bgMusic.play().catch(() => {});
+    currentIndex = 0;
+    showMessage();
+    showPage(1);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    currentIndex++;
+    if (currentIndex < messages.length) {
+      showMessage();
+    } else {
+      showPage(2); // ke galeri
+    }
+  });
+
+  toHeartPageBtn.addEventListener('click', () => {
+    showPage(3); // ke halaman hati
+  });
+
+  heartBtn.addEventListener('click', () => {
+    alert(`Yeyy! Aku juga sayang banget sama kamu, ${loverName}!!`);
+    location.reload();
+  });
+
+  function showMessage() {
+    greeting.style.opacity = 0;
+    messageContent.style.opacity = 0;
+    // trigger reflow for animation restart
+    void greeting.offsetWidth;
+    void messageContent.offsetWidth;
+
+    greeting.textContent = `Untuk ${loverName},selamatt ulangg tahunn yaaa:)`;
+    messageContent.textContent = messages[currentIndex];
+
+    greeting.style.animation = 'slideFadeIn 1s ease forwards';
+    messageContent.style.animation = 'slideFadeIn 1s ease forwards';
+  }
+</script></body>
+</html>
